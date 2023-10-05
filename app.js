@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const date = require(__dirname + "/date.js"); // Make sure date.js is implemented correctly
-const _ = require("np");
+const _ = require("lodash");
 
 // Import dotenv and configure it to load environment variables from .env
 require('dotenv').config();
