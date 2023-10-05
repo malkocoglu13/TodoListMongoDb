@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const date = require(__dirname + "/date.js"); // Make sure date.js is implemented correctly
-const _ = require("lodash");
+const _ = require("np");
 
 // Import dotenv and configure it to load environment variables from .env
 require('dotenv').config();
@@ -143,9 +143,6 @@ app.post("/delete", async function (req, res) {
   }
 });
 
-app.get("/about", function (req, res) {
-  res.render("about");
-});
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
