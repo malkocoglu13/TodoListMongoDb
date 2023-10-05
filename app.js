@@ -6,6 +6,9 @@ const mongoose = require("mongoose");
 const date = require(__dirname + "/date.js"); // Make sure date.js is implemented correctly
 const _ = require("lodash");
 
+// Import dotenv and configure it to load environment variables from .env
+require('dotenv').config();
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -13,8 +16,10 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://admin-steve:Test123..@cluster0.hqwijmz.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });
+// Use the environment variable to access the MongoDB connection string
+const mongoURI = process.env.MONGODB_URI;
 
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const itemsScheme = {
   name: String
@@ -27,19 +32,17 @@ const item1 = new Item({
   name: "Welcome to your task management system!"
 });
 const item2 = new Item({
-  name: "Click the '+' button to add a new task and save it Mongo Database"
+  name: "Click the '+' button to add a new task and save it to the Mongo Database"
 });
 const item3 = new Item({
   name: "Use the checkbox to mark a task as completed, and it will be deleted from the database"
 });
 const defaultItems = [item1, item2, item3];
 const listScheme = {
-  name:String,
-  items:[itemsScheme]
+  name: String,
+  items: [itemsScheme]
 };
 const List = mongoose.model("List", listScheme);
-
-
 
 app.get("/", async function (req, res) {
   const day = date.getDate();
@@ -80,7 +83,6 @@ app.get("/:customListName", async function(req, res) {
     res.status(500).send("Server error");
   }
 });
-
 
 app.post("/", async function (req, res) {
   const itemName = req.body.newItem;
@@ -140,8 +142,6 @@ app.post("/delete", async function (req, res) {
     }
   }
 });
-
-
 
 app.get("/about", function (req, res) {
   res.render("about");
